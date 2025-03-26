@@ -1,0 +1,38 @@
+name: Vault Workflow - Setup
+description:
+  A Terraform-driven workflow for managing namespaces in HashiCorp Vault
+  Enterprise
+author: David Alexander <opensource@thelonelyghost.com>
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: terminal
+  color: purple
+
+inputs:
+  vault:
+    description: |-
+      The value for `$VAULT_ADDR` for the Vault Address. Will default to the
+      value of `$VAULT_ADDR`
+    default: ""
+  auth-mount:
+    description: |-
+      The path (e.g., `auth/jwt`) to the Vault auth method configured to handle
+      GitHub Actions workload identities. Must an auth method of type JWT. If 
+      auth occurs in a non-root namespace, prefix the namespace as part of this
+      path.
+    default: auth/jwt
+  auth-role:
+    description: |-
+      Name of the role to use on the configured auth mount when authenticating
+      to HashiCorp Vault
+    required: true
+
+outputs:
+  vault-token:
+    description: Vault Token
+
+runs:
+  using: node20
+  main: ../dist/setup/index.js
+  # post: ../dist/cleanup/index.js
